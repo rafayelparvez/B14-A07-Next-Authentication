@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import BannerImage from "../../public/bazar-hero.png"
+import BannerImage from "../../public/bazar-hero.png";
 
 const Banner = () => {
   const today = new Intl.DateTimeFormat("bn-BD", {
@@ -27,16 +27,21 @@ const Banner = () => {
 
             <p className="mt-4 max-w-md text-sm leading-relaxed text-gray-600 sm:text-base">
               চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক
-              বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক
-              জায়গায়।
+              বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
             </p>
 
-            <Link
-              href="/products"
+            <button
+              type="button"
+              onClick={() => {
+                document.getElementById("all-products")?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }}
               className="mt-6 inline-block rounded-lg bg-emerald-600 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-emerald-700 sm:text-base"
             >
               সব পণ্য দেখুন
-            </Link>
+            </button>
           </div>
 
           {/* Right: image */}

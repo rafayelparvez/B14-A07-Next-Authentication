@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import { useBazardor, type Product } from "@/context/BazardorContext";
 import PriceMovementSection from "./PriceMovementSection";
-import AllProductsSection from "./AllProductsSection";
 
 const changeOf = (p: Product) =>
   p.yesterday && p.yesterday !== 0
@@ -57,7 +56,6 @@ const ProductsOverview = () => {
         direction="down"
         products={losers}
       />
-      <AllProductsSection products={products} />
     </div>
   );
 };

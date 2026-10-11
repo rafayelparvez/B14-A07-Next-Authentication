@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { useBazardor } from "@/context/BazardorContext";
+import { useSession } from "@/lib/auth-client";
 import Icon from "@/components/Icon";
 import ProductDetailSkeleton, {
   SummarySkeleton,
@@ -83,6 +84,19 @@ function ProductImage({
 function ProductDetailPage() {
   const params = useParams<{ slug: string }>();
   const slug = decodeURIComponent(params.slug);
+  const router = useRouter();
+
+  // ---- Auth guard: signed-in না থাকলে /sign-in এ পাঠিয়ে দাও ----
+  const { data: session, isPending: sessionLoading } = useSession();
+
+  useEffect(() => {
+    if (!sessionLoading && !session) {
+      toast.info("বিস্তারিত দাম দেখতে সাইন ইন করুন", {
+        toastId: "product-auth-required",
+      });
+      router.replace("/sign-in");
+    }
+  }, [sessionLoading, session, router]);
 
   const { products, loading, error, refetch } = useBazardor();
   const product = useMemo(
@@ -129,6 +143,12 @@ function ProductDetailPage() {
     const avg = markets.reduce((s, m) => s + m.avg, 0) / markets.length;
     return { lowest, highest, avg };
   }, [markets]);
+
+  // সেশন চেক হওয়ার আগ পর্যন্ত, বা সাইন-ইন না থাকলে (redirect হওয়ার সময়টুকু)
+  // স্কেলিটন দেখাও — আসল কন্টেন্ট এক মুহূর্তের জন্যও ফ্ল্যাশ করবে না
+  if (sessionLoading || !session) {
+    return <ProductDetailSkeleton />;
+  }
 
   if (loading) {
     return <ProductDetailSkeleton />;

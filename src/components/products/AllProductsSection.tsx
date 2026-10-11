@@ -7,7 +7,7 @@ import ProductCard from "./ProductCard";
 type SortKey = "default" | "name" | "price-asc" | "price-desc" | "change-desc";
 
 type Props = {
-  products: Product[];
+  products?: Product[];
   title?: string | null;
   defaultSort?: SortKey;
 };
@@ -20,10 +20,16 @@ const changeOf = (p: Product) =>
     : 0;
 
 const AllProductsSection = ({
-  products,
+  products: productsProp,
   title = "সব পণ্য",
   defaultSort = "name",
 }: Props) => {
+  // caller bhul korleo crash korbe na
+  const products = useMemo(
+    () => (Array.isArray(productsProp) ? productsProp : []),
+    [productsProp]
+  );
+
   const [sortKey, setSortKey] = useState<SortKey>(defaultSort);
 
   const sorted = useMemo(() => {

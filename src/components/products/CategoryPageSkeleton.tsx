@@ -5,16 +5,12 @@ const Bar = ({ className = "" }: { className?: string }) => (
   <div className={`animate-pulse rounded bg-gray-200 ${className}`} />
 );
 
-// Product Card Skeleton
+/** ProductCard-er hubohu shape */
 function ProductCardSkeleton() {
   return (
-    <div
-      className="rounded-xl border border-gray-200 bg-white p-4"
-      aria-hidden="true"
-    >
+    <div className="rounded-xl border border-gray-200 bg-white p-4" aria-hidden>
       <div className="flex items-center gap-3">
         <Bar className="h-10 w-10 shrink-0 rounded-lg" />
-
         <div className="space-y-2">
           <Bar className="h-4 w-28" />
           <Bar className="h-3 w-16" />
@@ -31,7 +27,7 @@ function ProductCardSkeleton() {
   );
 }
 
-// Product Grid Skeleton
+/** Card grid (AllProductsSection-er grid-er sathe same column) */
 function ProductGridSkeleton({ count = 6 }: { count?: number }) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -42,37 +38,35 @@ function ProductGridSkeleton({ count = 6 }: { count?: number }) {
   );
 }
 
-// Category Page Skeleton
-const CategoryPageSkeleton = () => {
+/** Puro category page-er skeleton */
+function CategoryPageSkeleton() {
   return (
     <div
-      className="min-h-screen bg-[#f3f7f4]"
+      className="bg-[#f3f7f4]"
       role="status"
       aria-busy="true"
       aria-label="লোড হচ্ছে"
     >
       <main className="mx-auto max-w-7xl space-y-5 px-3 py-6 sm:px-6">
-        {/* Category Header */}
+        {/* Category header */}
         <section className="flex items-center gap-4 rounded-2xl border border-gray-200 bg-white px-5 py-5">
           <Bar className="h-12 w-12 shrink-0 rounded-xl" />
-
-          <div className="min-w-0 space-y-2.5">
+          <div className="space-y-2.5">
             <Bar className="h-7 w-24" />
-            <Bar className="h-4 w-full max-w-56" />
+            <Bar className="h-4 w-56 max-w-full" />
           </div>
         </section>
 
-        {/* Count + Sort */}
+        {/* Count + sort row */}
         <div className="flex items-center justify-between gap-3">
-          <Bar className="h-4 w-32 sm:w-44" />
-          <Bar className="h-8 w-24 shrink-0 rounded-lg sm:w-28" />
+          <Bar className="h-4 w-44" />
+          <Bar className="h-8 w-28 rounded-lg" />
         </div>
 
-        {/* Product Cards */}
-        <ProductGridSkeleton count={6} />
+        {/* Cards */}
+        <ProductGridSkeleton />
       </main>
     </div>
   );
-};
-
+}
 export default CategoryPageSkeleton;

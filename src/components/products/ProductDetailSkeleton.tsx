@@ -1,4 +1,3 @@
-// Reusable skeleton animation
 const Skeleton = ({
   className = "",
 }: {
