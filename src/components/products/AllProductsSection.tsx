@@ -1,0 +1,68 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import type { Product } from "@/context/BazardorContext";
+import ProductCard from "./ProductCard";
+
+type SortKey = "name" | "price-asc" | "price-desc" | "change-desc";
+
+const changeOf = (p: Product) =>
+  p.yesterday && p.yesterday !== 0
+    ? ((p.today - p.yesterday) / p.yesterday) * 100
+    : 0;
+
+const AllProductsSection = ({ products }: { products: Product[] }) => {
+  const [sortKey, setSortKey] = useState<SortKey>("name");
+
+  const sorted = useMemo(() => {
+    const list = [...products];
+
+    switch (sortKey) {
+      case "price-asc":
+        return list.sort((a, b) => a.today - b.today);
+      case "price-desc":
+        return list.sort((a, b) => b.today - a.today);
+      case "change-desc":
+        return list.sort(
+          (a, b) => Math.abs(changeOf(b)) - Math.abs(changeOf(a))
+        );
+      default:
+        return list.sort((a, b) => a.nameBn.localeCompare(b.nameBn, "bn"));
+    }
+  }, [products, sortKey]);
+
+  return (
+    <section>
+      <div className="mb-3 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-base font-extrabold text-gray-900">সব পণ্য</h2>
+          <p className="text-xs text-emerald-600">
+            মোট {sorted.length}টি পণ্য দেখানো হচ্ছে
+          </p>
+        </div>
+
+        <label className="flex items-center gap-2 text-sm text-gray-600">
+          সাজান
+          <select
+            value={sortKey}
+            onChange={(e) => setSortKey(e.target.value as SortKey)}
+            className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 outline-none focus:border-emerald-500"
+          >
+            <option value="name">নাম</option>
+            <option value="price-asc">দাম (কম থেকে বেশি)</option>
+            <option value="price-desc">দাম (বেশি থেকে কম)</option>
+            <option value="change-desc">সবচেয়ে বেশি পরিবর্তন</option>
+          </select>
+        </label>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {sorted.map((p) => (
+          <ProductCard key={p.id} product={p} />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default AllProductsSection;

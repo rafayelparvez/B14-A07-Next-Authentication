@@ -1,39 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/logo-icon.png";
+import { useBazardor } from "@/context/BazardorContext";
 
-type Category = {
-  id: number | string;
-  slug: string;
-  nameBn: string;
-  icon: string;
-};
+const Navbar = () => {
+  const { categories } = useBazardor();
 
-const getCategories = async (): Promise<Category[]> => {
-  const res = await fetch(
-    "https://openapi.programming-hero.com/api/bazardor/categories",
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch categories");
-  }
-
-  const data = await res.json();
-
-  // Some programming-hero openapi endpoints wrap the array in a `data` key —
-  // this handles both shapes safely.
-  return data?.data ?? data;
-};
-
-const Navbar = async () => {
   const today = new Intl.DateTimeFormat("bn-BD", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
   }).format(new Date());
-
-  const categories = await getCategories();
 
   return (
     <div className="w-full">
@@ -85,7 +65,7 @@ const Navbar = async () => {
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl overflow-x-auto px-3 sm:px-6">
           <nav className="flex items-center gap-6 whitespace-nowrap py-3 sm:gap-8">
-            {categories?.map((cat) => (
+            {categories.map((cat) => (
               <a
                 key={cat.id ?? cat.slug}
                 href={`/category/${cat.slug}`}

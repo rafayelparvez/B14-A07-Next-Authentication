@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Hind_Siliguri } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import { BazardorProvider } from "@/context/BazardorContext";
+import Footer from "@/components/Footer";
 
 const getHindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
@@ -20,8 +22,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${getHindSiliguri.className} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col">
-        <Header />
-        {children}
+        <BazardorProvider>
+          <Header />
+          {children}
+          <Footer />
+        </BazardorProvider>
       </body>
     </html>
   );

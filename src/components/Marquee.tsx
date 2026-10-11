@@ -1,22 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import FastMarquee from "react-fast-marquee";
-
-type Product = {
-  id: number | string;
-  slug: string;
-  nameBn: string;
-  category: string;
-  categoryNameBn: string;
-  categoryIcon: string;
-  unit: string;
-  image: string;
-  today: number;
-  yesterday: number;
-  lastWeek: number;
-  lastMonth: number;
-};
+import { useBazardor, type Product } from "@/context/BazardorContext";
 
 const formatBn = (num: number) => new Intl.NumberFormat("bn-BD").format(num);
 
@@ -48,37 +33,7 @@ const TickItem = ({ product }: { product: Product }) => {
 };
 
 const Marquee = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadProducts = async () => {
-      try {
-        const res = await fetch(
-          "https://openapi.programming-hero.com/api/bazardor/products"
-        );
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch products");
-        }
-
-        const data = await res.json();
-
-        if (!cancelled) {
-          setProducts(data?.data ?? data ?? []);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    loadProducts();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { products } = useBazardor();
 
   if (products.length === 0) return null;
 
