@@ -4,9 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/logo-icon.png";
 import { useBazardor } from "@/context/BazardorContext";
+import { authClient } from "@/lib/auth-client";
+import UserMenu from "@/components/UserMenu";
 
 const Navbar = () => {
   const { categories } = useBazardor();
+  const { data: session, isPending } = authClient.useSession();
 
   const today = new Intl.DateTimeFormat("bn-BD", {
     weekday: "long",
@@ -42,21 +45,28 @@ const Navbar = () => {
             </span>
           </Link>
 
-          {/* Authentication Buttons */}
+          {/* Auth area: UserMenu when logged in (or still loading, UserMenu
+              shows its own skeleton), otherwise Sign in / Sign up */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-            <Link
-              href="/sign-in"
-              className="rounded-lg px-2.5 py-2 text-xs font-bold text-gray-800 transition-colors hover:bg-emerald-50 hover:text-emerald-700 sm:px-4 sm:text-base"
-            >
-              সাইন ইন
-            </Link>
+            {isPending || session?.user ? (
+              <UserMenu />
+            ) : (
+              <>
+                <Link
+                  href="/sign-in"
+                  className="rounded-lg px-2.5 py-2 text-xs font-bold text-gray-800 transition-colors hover:bg-emerald-50 hover:text-emerald-700 sm:px-4 sm:text-base"
+                >
+                  সাইন ইন
+                </Link>
 
-            <Link
-              href="/sign-up"
-              className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700 sm:px-5 sm:py-2.5 sm:text-base"
-            >
-              সাইন আপ
-            </Link>
+                <Link
+                  href="/sign-up"
+                  className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-emerald-700 sm:px-5 sm:py-2.5 sm:text-base"
+                >
+                  সাইন আপ
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       </div>
