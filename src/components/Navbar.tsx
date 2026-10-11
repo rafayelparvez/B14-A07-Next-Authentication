@@ -3,12 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/logo-icon.png";
-import { useBazardor } from "@/context/BazardorContext";
 import { authClient } from "@/lib/auth-client";
 import UserMenu from "@/components/UserMenu";
+import CategoryNav from "@/components/CategoryNav";
 
 const Navbar = () => {
-  const { categories } = useBazardor();
   const { data: session, isPending } = authClient.useSession();
 
   const today = new Intl.DateTimeFormat("bn-BD", {
@@ -71,23 +70,13 @@ const Navbar = () => {
         </nav>
       </div>
 
-      {/* Category links */}
+      {/* Category links (uses next/link, so no full page reload) */}
       <div className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl overflow-x-auto px-3 sm:px-6">
-          <nav className="flex items-center gap-6 whitespace-nowrap py-3 sm:gap-8">
-            {categories.map((cat) => (
-              <a
-                key={cat.id ?? cat.slug}
-                href={`/category/${cat.slug}`}
-                className="flex items-center gap-2 text-sm font-bold text-gray-800 transition-colors hover:text-emerald-600"
-              >
-                {/* If `icon` is an image URL instead of an emoji, swap this
-                    span for: <img src={cat.icon} alt={cat.nameBn} className="h-4 w-4" /> */}
-                <span className="text-base leading-none">{cat.icon}</span>
-                {cat.nameBn}
-              </a>
-            ))}
-          </nav>
+          <CategoryNav
+            variant="plain"
+            className="flex items-center gap-6 whitespace-nowrap py-3 sm:gap-8"
+          />
         </div>
       </div>
     </div>
