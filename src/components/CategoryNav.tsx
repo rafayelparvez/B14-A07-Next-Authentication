@@ -1,3 +1,9 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { useBazardor } from "@/context/BazardorContext";
+import CategoryLink from "./CategoryLink";
+
 type Props = {
   className?: string;
   linkClassName?: string;
@@ -9,7 +15,8 @@ export default function CategoryNav({
   linkClassName = "",
   variant = "pill",
 }: Props) {
-  // তোমার আগের state, pathname এবং category logic এখানে থাকবে
+  const { categories } = useBazardor();
+  const pathname = usePathname();
 
   return (
     <nav className={className}>

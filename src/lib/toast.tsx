@@ -5,14 +5,15 @@ import { toast, type ToastOptions } from "react-toastify";
 
 // Shared look for every toast: white rounded card, soft shadow, no progress
 // bar/close button — matches the "সফলভাবে সাইন আউট হয়েছে।" design.
+// Note: newer react-toastify versions removed `bodyClassName`, so all the
+// styles (including the former body styles) now live in `className`.
 const baseOptions: ToastOptions = {
   position: "top-center",
   autoClose: 3000,
   hideProgressBar: true,
   closeButton: false,
-  className: "!min-h-0 !rounded-2xl !bg-white !p-0 !shadow-lg",
-  bodyClassName:
-    "!flex !items-center !gap-3 !p-3 !text-sm !font-semibold !text-gray-900",
+  className:
+    "!min-h-0 !items-center !gap-3 !rounded-2xl !bg-white !p-3 !text-sm !font-semibold !text-gray-900 !shadow-lg",
 };
 
 const IconBadge = ({
