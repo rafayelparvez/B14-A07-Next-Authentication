@@ -1,38 +1,37 @@
+import Link from "next/link";
 import type { Product } from "@/context/BazardorContext";
-
-const CATEGORY_COLORS: Record<string, string> = {
-  chal: "bg-rose-100",
-  dal: "bg-amber-100",
-  tel: "bg-sky-100",
-  sobji: "bg-emerald-100",
-  mach: "bg-blue-100",
-  mangsho: "bg-red-100",
-  "dim-dudh": "bg-yellow-100",
-  mosla: "bg-orange-100",
-};
+import Icon from "@/components/Icon";
 
 const formatBn = (num: number) => new Intl.NumberFormat("bn-BD").format(num);
+const formatPercent = (num: number) =>
+  new Intl.NumberFormat("bn-BD", {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  }).format(num);
 
 const ProductCard = ({ product }: { product: Product }) => {
   const change =
     product.yesterday && product.yesterday !== 0
       ? ((product.today - product.yesterday) / product.yesterday) * 100
       : 0;
-  const isFlat = change === 0;
-  const isUp = change > 0;
+  const rounded = Number(change.toFixed(1));
+  const isFlat = rounded === 0;
+  const isUp = rounded > 0;
 
-  const bg = CATEGORY_COLORS[product.category] ?? "bg-gray-100";
+  const badge = isFlat
+    ? "bg-gray-100 text-gray-500"
+    : isUp
+      ? "bg-red-50 text-red-600"
+      : "bg-emerald-50 text-emerald-600";
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
-      {/* Icon + name */}
+    <Link
+      href={`/products/${product.slug}`}
+      className="block rounded-xl border border-gray-200 bg-white p-4 transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-600"
+    >
       <div className="flex items-center gap-3">
-        <span
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg ${bg}`}
-        >
-          {/* If `categoryIcon` is an image URL instead of an emoji, swap this
-              span for: <img src={product.categoryIcon} alt="" className="h-5 w-5" /> */}
-          {product.categoryIcon}
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-lg">
+          <Icon src={product.categoryIcon} className="h-6 w-6 object-contain" />
         </span>
         <div className="min-w-0">
           <p className="truncate text-sm font-bold text-gray-900">
@@ -42,7 +41,6 @@ const ProductCard = ({ product }: { product: Product }) => {
         </div>
       </div>
 
-      {/* Price */}
       <p className="mt-4 text-xs text-gray-400">আজকের দাম</p>
 
       <div className="mt-1 flex items-center justify-between">
@@ -51,19 +49,12 @@ const ProductCard = ({ product }: { product: Product }) => {
         </span>
 
         <span
-          className={`flex items-center gap-0.5 text-sm font-bold ${
-            isFlat
-              ? "text-gray-400"
-              : isUp
-                ? "text-emerald-600"
-                : "text-red-500"
-          }`}
+          className={`rounded-full px-2 py-0.5 text-xs font-bold ${badge}`}
         >
-          {isFlat ? "—" : isUp ? "▲" : "▼"}{" "}
-          {formatBn(Math.abs(Number(change.toFixed(1))))}%
+          {isFlat ? "—" : isUp ? "▲" : "▼"} {formatPercent(Math.abs(rounded))}%
         </span>
       </div>
-    </div>
+    </Link>
   );
 };
 
