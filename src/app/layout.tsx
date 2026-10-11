@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { BazardorProvider } from "@/context/BazardorContext";
 import Footer from "@/components/Footer";
+import { ToastContainer } from "react-toastify";
 
 const getHindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Header />
           {children}
           <Footer />
+          <ToastContainer />
         </BazardorProvider>
       </body>
     </html>
