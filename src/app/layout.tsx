@@ -13,18 +13,15 @@ export const metadata: Metadata = {
   description: "আজকের বাজারের অবস্থা",
 };
 
-export default function RootLayout({
-  children,
-}: LayoutProps<"/">) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
       className={`${getHindSiliguri.className} h-full antialiased`}
     >
       <body className="flex min-h-screen flex-col">
-     <Header />
+        <Header />
         {children}
-
       </body>
     </html>
   );

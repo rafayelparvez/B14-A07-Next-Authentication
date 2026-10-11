@@ -11,7 +11,7 @@ type Category = {
 
 const getCategories = async (): Promise<Category[]> => {
   const res = await fetch(
-    "https://openapi.programming-hero.com/api/bazardor/categories"
+    "https://openapi.programming-hero.com/api/bazardor/categories",
   );
 
   if (!res.ok) {
