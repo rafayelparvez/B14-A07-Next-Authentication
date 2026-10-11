@@ -9,12 +9,19 @@ export default function CategoryNav({
   linkClassName = "",
   variant = "pill",
 }: Props) {
-  // ... baki ager moto
+  // তোমার আগের state, pathname এবং category logic এখানে থাকবে
 
-  <CategoryLink
-    key={cat.id ?? cat.slug}
-    category={cat}
-    variant={variant}
-    active={pathname === `/category/${cat.slug}`}
-    className={linkClassName}
-  />
+  return (
+    <nav className={className}>
+      {categories.map((cat) => (
+        <CategoryLink
+          key={cat.id ?? cat.slug}
+          category={cat}
+          variant={variant}
+          active={pathname === `/category/${cat.slug}`}
+          className={linkClassName}
+        />
+      ))}
+    </nav>
+  );
+}
