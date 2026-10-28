@@ -56,7 +56,7 @@ const AllProductsSection = ({
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <div>
           {title && (
-            <h2 className="text-base font-extrabold text-gray-900">{title}</h2>
+            <h2 className="text-lg mb-3 font-extrabold text-gray-900">{title}</h2>
           )}
           <p
             className={
